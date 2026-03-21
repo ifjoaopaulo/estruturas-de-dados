@@ -1,0 +1,16 @@
+Questão 1: Análise de Fluxo(Teste de Mesa):
+
+Análise(teste de mesa) da função exercicio01(int n):
+
+1. A função recebe um número (int n);
+2. A função checa se o número é positivo (if (n > 0));
+3. Exibe a mensagem "Entrando: n" e então chama novamente a função, reduzindo o número original em 1, e então exibindo a mensagem novamente como "Saindo: n" mas com a ordem númerica invertida, visto que está desempilhando a pilha de recursividade;
+
+A saída de mensagens no console ficaria assim (assumindo que o número que a função recebe é 3):
+
+Entrando: 3
+Entrando: 2
+Entrando: 1
+Saindo: 1
+Saindo: 2
+Saindo: 3
