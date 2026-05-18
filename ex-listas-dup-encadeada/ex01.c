@@ -1,6 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+Questões de reflexão:
+1. Quando um nó intermediário é removido,
+é importante lembrar de atualizar o ponteiro anterior 
+ao valor antigo para enxergar que o próximo valor foi atualizado
+(o antigo valor prox seria o nó que estamos removendo, 
+então o novo prox seria o valor prox do nó removido). 
+Um exemplo disso pode ser encontrado na função remover() desta atividade,
+onde eu atualizei tanto atual->ant->prox quanto atual->prox->ant.
+
+2. A principal vantagem é a capacidade de usar a lista em via dupla,
+permitindo que acessemos tanto o conteúdo seguinte quanto o anterior.
+Essa vantagem pode ser observada na função exibirReverso() desta atividade,
+onde sua implementação foi facilitada pela existencia do ponteiro ant.
+
+3. Para evitar o memory leak, onde o programa pode ocupar
+mais memória do que necessário,
+até mesmo após o encerramento de sua execução.
+Causando grandes problemas de performance
+no dispositivo inteiro
+do usuário.
+*/
+
 typedef struct No {
     int valor;
     struct No* prox;
@@ -59,7 +82,8 @@ void inserirFim(No** inicio, int valor) {
     novo->ant = ultimo;
 }
 
-// Percorre a lista inteira até encontrar o valor que foi inserido pelo usuário, e então remove ele. Também atualiza os ponteiros anteriores e seguintes ao valor que foi removido(se estirem).
+// Percorre a lista inteira até encontrar o valor que foi inserido pelo usuário, e então remove ele. 
+// Também atualiza os ponteiros anteriores e seguintes ao valor que foi removido(se estirem).
 void remover(No** inicio, int valor) {
     if (*inicio == NULL) {
         printf("Lista vazia.\n");
@@ -145,7 +169,11 @@ void buscar(struct No** inicio, int valor) {
     }
 
     struct No* atual = *inicio;
-    int posicao = 0; // Nesse caso, a primeira posição seria a posição 0, então em uma lista 1, 2, 3, o número 1 seria a posição 0, o número 2 seria a posição 1, etc., como o índice de um vetor.
+    int posicao = 0;
+    
+// Nesse caso, a primeira posição seria a posição 0,
+// então em uma lista 1, 2, 3, o número 1 seria a posição 0, o número 2 seria a posição 1, etc.,
+// como o índice de um vetor.
 
     while(atual != NULL) {
         if (atual->valor == valor) {
