@@ -1,95 +1,91 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*
+Exercício 1 — Impressão da Fila
+Implemente uma função que percorra a fila e imprima todos os seus elementos.
+
+A função deve exibir:
+
+matrícula;
+nome;
+notas do aluno.
+*/
 
 typedef struct {
     int matricula;
-    char nome[30];
-    float n1, n2, n3;
+    char nome[50];
+    float notas[3]; 
 } Aluno;
 
-struct fila {
-    int inicio;
-    int final;
-    int qtd;
-    Aluno dados[MAX];
+typedef struct No {
+    Aluno dados;
+    struct No* prox;
+} No;
+
+typedef struct {
+    No* inicio;
+    No* fim;
 } Fila;
 
-Fila* criaFila() {
-
-    Fila *fi;
-
-    fi = (Fila*) malloc(sizeof(struct fila));
-
-    if(fi != NULL) {
-        fi->inicio = 0;
-        fi->final = 0;
-        fi->qtd = 0;
+void imprimirFila(Fila* f) {
+    if (f->inicio == NULL) {
+        printf("A fila esta vazia.\n");
+        return;
     }
 
-    return fi;
-}
-
-int insereFila(Fila* fi, Aluno al) {
-
-    if(fi == NULL)
-        return 0;
-
-    Elem *no = (Elem*) malloc(sizeof(Elem));
-
-    if(no == NULL)
-        return 0;
-
-    no->dados = al;
-    no->prox = NULL;
-
-    if((*fi) == NULL) {
-
-        *fi = no;
-
-    } else {
-
-        Elem *aux = *fi;
-
-        while(aux->prox != NULL)
-            aux = aux->prox;
-
-        aux->prox = no;
-    }
-
-    return 1;
-}
-
-void imprimeFila(Fila* fi) {
+    No* atual = f->inicio;
     
+    printf("\nLista de Alunos na Fila:\n");
+    
+    while (atual != NULL) {
+        printf("Matricula: %d\n", atual->dados.matricula);
+        printf("Nome: %s\n", atual->dados.nome);
+        printf("Notas: %.1f, %.1f, %.1f\n", 
+               atual->dados.notas[0], 
+               atual->dados.notas[1], 
+               atual->dados.notas[2]);
+        printf("-------------------------------\n");
+        
+        atual = atual->prox; 
+    }
+}
+
+void inicializarFila(Fila* f) {
+    f->inicio = NULL;
+    f->fim = NULL;
+}
+
+void inserirFila(Fila* f, Aluno a) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    if (novoNo == NULL) {
+        printf("Erro de alocacao de memoria.\n");
+        return;
+    }
+    novoNo->dados = a;
+    novoNo->prox = NULL;
+
+    if (f->inicio == NULL) {
+        f->inicio = novoNo;
+    } else {
+        f->fim->prox = novoNo;
+    }
+    f->fim = novoNo;
 }
 
 int main() {
-    Fila* fila = criarFila();
+    Fila fila;
+    inicializarFila(&fila);
 
-    Aluno aluno1, aluno2, aluno3;
+    Aluno a1 = {101, "João", {9.5, 8.0, 10.0}};
+    Aluno a2 = {102, "Alice", {10.0, 9.8, 10.0}};
+    Aluno a3 = {103, "Pedro", {8.5, 9.0, 9.5}};
 
-    aluno1.matricula = 101;
-    aluno1.nome = Joao;
-    aluno1.n1 = 9.5;
-    aluno1.n2 = 8;
-    aluno1.n3 = 7.8;
+    inserirFila(&fila, a1);
+    inserirFila(&fila, a2);
+    inserirFila(&fila, a3);
 
-    aluno2.matricula = 102;
-    aluno2.nome = Clara;
-    aluno2.n1 = 9;
-    aluno2.n2 = 9.4;
-    aluno2.n3 = 6;
-
-    aluno3.matricula = 103;
-    aluno3.nome = Luiz;
-    aluno3.n1 = 4;
-    aluno3.n2 = 3;
-    aluno3.n3 = 10;
-
-    insereFila(&fila, aluno1);
-    insereFila(&fila, aluno2);
-    insereFila(&fila, aluno3);
-
-    imprimeFila(&fila);
-
+    imprimirFila(&fila);
     return 0;
 }
